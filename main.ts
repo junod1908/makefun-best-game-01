@@ -23,8 +23,10 @@ function copyTree(source: string, destination: string): number {
   return count;
 }
 
-rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
+for (const entry of readdirSync(outDir).sort()) {
+  rmSync(join(outDir, entry), { recursive: true, force: true });
+}
 const gameFiles = copyTree(join(repoDir, 'game'), join(outDir, 'game'));
 const screenshotFiles = copyTree(join(repoDir, 'screenshots'), join(outDir, 'screenshots'));
 writeFileSync(join(outDir, 'dossier.json'), buildDossier(outDir, {
